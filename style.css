@@ -1,0 +1,64 @@
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { font-family: 'Space Grotesk', sans-serif; background: #FAFAFA; color: #09090B; }
+h1, h2, h3, h4 { font-family: 'Archivo', sans-serif; }
+
+/* Navbar */
+.nav-link { position: relative; }
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: -2px; left: 0;
+  width: 0; height: 2px;
+  background: #2563EB;
+  transition: width 0.25s ease;
+}
+.nav-link:hover::after { width: 100%; }
+
+/* Hero gradient text */
+.gradient-text {
+  background: linear-gradient(135deg, #2563EB 0%, #7C3AED 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Timeline */
+.timeline-item { position: relative; padding-left: 2rem; }
+.timeline-item::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 8px;
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  background: #2563EB;
+}
+.timeline-item::after {
+  content: '';
+  position: absolute;
+  left: 4px; top: 18px;
+  width: 2px;
+  height: calc(100% + 16px);
+  background: #E4E4E7;
+}
+.timeline-item:last-child::after { display: none; }
+
+/* Skill bar */
+.skill-bar { height: 6px; border-radius: 9999px; background: #E4E4E7; overflow: hidden; }
+.skill-fill { height: 100%; border-radius: 9999px; background: linear-gradient(90deg, #2563EB, #7C3AED); transform-origin: left; transform: scaleX(0); transition: transform 1s ease; }
+.skill-fill.animated { transform: scaleX(1); }
+
+/* Card hover */
+.project-card { transition: transform 0.25s ease, box-shadow 0.25s ease; }
+.project-card:hover { transform: translateY(-6px); box-shadow: 0 20px 40px rgba(37,99,235,0.12); }
+
+/* Section reveal */
+.reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.6s ease, transform 0.6s ease; }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+/* Floating nav */
+#navbar { backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+
+@media (prefers-reduced-motion: reduce) {
+  *, .reveal, .skill-fill { transition: none !important; animation: none !important; }
+}

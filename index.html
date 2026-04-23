@@ -9,105 +9,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@300;400;500;600;700;900&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
   <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          fontFamily: {
-            heading: ['Archivo', 'sans-serif'],
-            body: ['Space Grotesk', 'sans-serif'],
-          },
-          colors: {
-            primary: '#18181B',
-            secondary: '#3F3F46',
-            accent: '#2563EB',
-            surface: '#FAFAFA',
-            text: '#09090B',
-          },
-          animation: {
-            'fade-up': 'fadeUp 0.6s ease forwards',
-            'slide-in': 'slideIn 0.5s ease forwards',
-          },
-          keyframes: {
-            fadeUp: {
-              '0%': { opacity: '0', transform: 'translateY(24px)' },
-              '100%': { opacity: '1', transform: 'translateY(0)' },
-            },
-            slideIn: {
-              '0%': { opacity: '0', transform: 'translateX(-20px)' },
-              '100%': { opacity: '1', transform: 'translateX(0)' },
-            },
-          },
-        },
-      },
-    }
-  </script>
-  <style>
-    * { box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
-    body { font-family: 'Space Grotesk', sans-serif; background: #FAFAFA; color: #09090B; }
-    h1, h2, h3, h4 { font-family: 'Archivo', sans-serif; }
-
-    /* Navbar */
-    .nav-link { position: relative; }
-    .nav-link::after {
-      content: '';
-      position: absolute;
-      bottom: -2px; left: 0;
-      width: 0; height: 2px;
-      background: #2563EB;
-      transition: width 0.25s ease;
-    }
-    .nav-link:hover::after { width: 100%; }
-
-    /* Hero gradient text */
-    .gradient-text {
-      background: linear-gradient(135deg, #2563EB 0%, #7C3AED 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-
-    /* Timeline */
-    .timeline-item { position: relative; padding-left: 2rem; }
-    .timeline-item::before {
-      content: '';
-      position: absolute;
-      left: 0; top: 8px;
-      width: 10px; height: 10px;
-      border-radius: 50%;
-      background: #2563EB;
-    }
-    .timeline-item::after {
-      content: '';
-      position: absolute;
-      left: 4px; top: 18px;
-      width: 2px;
-      height: calc(100% + 16px);
-      background: #E4E4E7;
-    }
-    .timeline-item:last-child::after { display: none; }
-
-    /* Skill bar */
-    .skill-bar { height: 6px; border-radius: 9999px; background: #E4E4E7; overflow: hidden; }
-    .skill-fill { height: 100%; border-radius: 9999px; background: linear-gradient(90deg, #2563EB, #7C3AED); transform-origin: left; transform: scaleX(0); transition: transform 1s ease; }
-    .skill-fill.animated { transform: scaleX(1); }
-
-    /* Card hover */
-    .project-card { transition: transform 0.25s ease, box-shadow 0.25s ease; }
-    .project-card:hover { transform: translateY(-6px); box-shadow: 0 20px 40px rgba(37,99,235,0.12); }
-
-    /* Section reveal */
-    .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.6s ease, transform 0.6s ease; }
-    .reveal.visible { opacity: 1; transform: translateY(0); }
-
-    /* Floating nav */
-    #navbar { backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
-
-    @media (prefers-reduced-motion: reduce) {
-      *, .reveal, .skill-fill { transition: none !important; animation: none !important; }
-    }
-  </style>
+  <script src="tailwind.config.js"></script>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body class="antialiased">
 
@@ -134,7 +37,7 @@
           Available for work
         </div>
         <h1 class="font-heading font-black text-5xl md:text-6xl lg:text-7xl leading-none tracking-tight">
-          Thanawut222<br/>
+          Thanawut<br/>
           <span class="gradient-text">Klomklom</span>
         </h1>
         <p class="text-secondary text-xl font-medium">Full-Stack Developer &amp; .NET Specialist</p>
@@ -650,61 +553,6 @@
     <p class="text-slate-600 text-xs mt-1">Built with HTML &amp; Tailwind CSS</p>
   </footer>
 
-  <!-- ─── SCRIPTS ─── -->
-  <script>
-    // Intersection Observer for reveal animations
-    const revealEls = document.querySelectorAll('.reveal');
-    const revealObserver = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
-          revealObserver.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.1 });
-    revealEls.forEach(el => revealObserver.observe(el));
-
-    // Skill bar animation
-    const skillFills = document.querySelectorAll('.skill-fill');
-    const skillObserver = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          const fills = entry.target.querySelectorAll('.skill-fill');
-          fills.forEach(fill => {
-            const w = fill.dataset.width;
-            fill.style.transform = `scaleX(${w})`;
-            fill.classList.add('animated');
-          });
-          skillObserver.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.3 });
-    const skillSection = document.getElementById('skillBars');
-    if (skillSection) skillObserver.observe(skillSection);
-
-    // Active nav highlight
-    const sections = document.querySelectorAll('section[id]');
-    const navLinks = document.querySelectorAll('.nav-link');
-    const sectionObserver = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          navLinks.forEach(link => {
-            link.style.color = link.getAttribute('href') === '#' + entry.target.id ? '#2563EB' : '';
-          });
-        }
-      });
-    }, { rootMargin: '-40% 0px -50% 0px' });
-    sections.forEach(s => sectionObserver.observe(s));
-
-    // Navbar scroll shadow
-    const navbar = document.getElementById('navbar');
-    window.addEventListener('scroll', () => {
-      if (window.scrollY > 20) {
-        navbar.classList.add('shadow-md');
-      } else {
-        navbar.classList.remove('shadow-md');
-      }
-    });
-  </script>
+  <script src="main.js"></script>
 </body>
 </html>
