@@ -1,3 +1,23 @@
+// Dark mode toggle
+const themeToggle = document.getElementById('themeToggle');
+const iconSun = document.getElementById('iconSun');
+const iconMoon = document.getElementById('iconMoon');
+
+const applyTheme = (dark) => {
+  document.documentElement.classList.toggle('dark', dark);
+  iconSun.classList.toggle('hidden', !dark);
+  iconMoon.classList.toggle('hidden', dark);
+};
+
+applyTheme(localStorage.getItem('theme') === 'dark');
+
+themeToggle.addEventListener('click', () => {
+  const isDark = document.documentElement.classList.toggle('dark');
+  localStorage.setItem('theme', isDark ? 'dark' : 'light');
+  iconSun.classList.toggle('hidden', !isDark);
+  iconMoon.classList.toggle('hidden', isDark);
+});
+
 // Intersection Observer for reveal animations
 const revealEls = document.querySelectorAll('.reveal');
 const revealObserver = new IntersectionObserver((entries) => {
