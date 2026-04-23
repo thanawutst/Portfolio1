@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Thanawut Klomklom — Portfolio</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%232563EB'/><text x='50%25' y='50%25' dominant-baseline='central' text-anchor='middle' font-family='Arial,sans-serif' font-weight='700' font-size='13' fill='white'>TK</text></svg>" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@300;400;500;600;700;900&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            heading: ['Archivo', 'sans-serif'],
+            body: ['Space Grotesk', 'sans-serif'],
+          },
+          colors: {
+            primary: '#18181B',
+            secondary: '#3F3F46',
+            accent: '#2563EB',
+            surface: '#FAFAFA',
+            text: '#09090B',
+          },
+          animation: {
+            'fade-up': 'fadeUp 0.6s ease forwards',
+            'slide-in': 'slideIn 0.5s ease forwards',
+          },
+          keyframes: {
+            fadeUp: {
+              '0%': { opacity: '0', transform: 'translateY(24px)' },
+              '100%': { opacity: '1', transform: 'translateY(0)' },
+            },
+            slideIn: {
+              '0%': { opacity: '0', transform: 'translateX(-20px)' },
+              '100%': { opacity: '1', transform: 'translateX(0)' },
+            },
+          },
+        },
+      },
+    }
+  </script>
+  <style>
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Space Grotesk', sans-serif; background: #FAFAFA; color: #09090B; }
+    h1, h2, h3, h4 { font-family: 'Archivo', sans-serif; }
+
+    /* Navbar */
+    .nav-link { position: relative; }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -2px; left: 0;
+      width: 0; height: 2px;
+      background: #2563EB;
+      transition: width 0.25s ease;
+    }
+    .nav-link:hover::after { width: 100%; }
+
+    /* Hero gradient text */
+    .gradient-text {
+      background: linear-gradient(135deg, #2563EB 0%, #7C3AED 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* Timeline */
+    .timeline-item { position: relative; padding-left: 2rem; }
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 8px;
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      background: #2563EB;
+    }
+    .timeline-item::after {
+      content: '';
+      position: absolute;
+      left: 4px; top: 18px;
+      width: 2px;
+      height: calc(100% + 16px);
+      background: #E4E4E7;
+    }
+    .timeline-item:last-child::after { display: none; }
+
+    /* Skill bar */
+    .skill-bar { height: 6px; border-radius: 9999px; background: #E4E4E7; overflow: hidden; }
+    .skill-fill { height: 100%; border-radius: 9999px; background: linear-gradient(90deg, #2563EB, #7C3AED); transform-origin: left; transform: scaleX(0); transition: transform 1s ease; }
+    .skill-fill.animated { transform: scaleX(1); }
+
+    /* Card hover */
+    .project-card { transition: transform 0.25s ease, box-shadow 0.25s ease; }
+    .project-card:hover { transform: translateY(-6px); box-shadow: 0 20px 40px rgba(37,99,235,0.12); }
+
+    /* Section reveal */
+    .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.6s ease, transform 0.6s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* Floating nav */
+    #navbar { backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, .reveal, .skill-fill { transition: none !important; animation: none !important; }
+    }
+  </style>
+</head>
+<body class="antialiased">
+
+<!-- ─── NAVBAR ─── -->
+  <nav id="navbar" class="fixed top-4 left-4 right-4 z-50 rounded-2xl bg-white/80 border border-gray-200 shadow-sm px-6 py-3 flex items-center justify-between">
+    <span class="font-heading font-bold text-lg tracking-tight text-text">TK<span class="text-accent">.</span></span>
+    <ul class="hidden md:flex items-center gap-7 text-sm font-medium text-secondary">
+      <li><a href="#about" class="nav-link hover:text-text transition-colors duration-200 cursor-pointer">About</a></li>
+      <li><a href="#skills" class="nav-link hover:text-text transition-colors duration-200 cursor-pointer">Skills</a></li>
+      <li><a href="#experience" class="nav-link hover:text-text transition-colors duration-200 cursor-pointer">Experience</a></li>
+      <li><a href="#projects" class="nav-link hover:text-text transition-colors duration-200 cursor-pointer">Projects</a></li>
+      <li><a href="#contact" class="nav-link hover:text-text transition-colors duration-200 cursor-pointer">Contact</a></li>
+    </ul>
+    <a href="#contact" class="bg-accent text-white text-sm font-semibold px-4 py-2 rounded-xl hover:bg-blue-700 transition-colors duration-200 cursor-pointer">Hire Me</a>
+  </nav>
+
+  <!-- ─── HERO ─── -->
+  <section id="hero" class="min-h-screen flex flex-col justify-center pt-24 pb-16 px-6 max-w-7xl mx-auto">
+    <div class="grid md:grid-cols-2 gap-12 items-center">
+      <!-- Text -->
+      <div class="space-y-6">
+        <div class="inline-flex items-center gap-2 bg-blue-50 text-accent text-sm font-medium px-4 py-1.5 rounded-full border border-blue-100">
+          <span class="w-2 h-2 rounded-full bg-green-400 inline-block animate-pulse"></span>
+          Available for work
+        </div>
+        <h1 class="font-heading font-black text-5xl md:text-6xl lg:text-7xl leading-none tracking-tight">
+          Thanawut<br/>
+          <span class="gradient-text">Klomklom</span>
+        </h1>
+        <p class="text-secondary text-xl font-medium">Full-Stack Developer &amp; .NET Specialist</p>
+        <p class="text-secondary leading-relaxed max-w-md">
+          Computer Science graduate with 7+ years of experience building web applications and enterprise systems using ASP.NET, C#, and SQL Server.
+        </p>
+        <div class="flex flex-wrap gap-3 pt-2">
+          <a href="#projects" class="bg-accent text-white font-semibold px-6 py-3 rounded-xl hover:bg-blue-700 transition-colors duration-200 cursor-pointer">View Projects</a>
+          <a href="#contact" class="border border-gray-300 text-text font-semibold px-6 py-3 rounded-xl hover:border-accent hover:text-accent transition-colors duration-200 cursor-pointer">Contact Me</a>
+        </div>
+        <!-- Stats -->
+        <div class="flex gap-8 pt-4 border-t border-gray-200">
+          <div>
+            <p class="font-heading font-bold text-3xl text-text">7+</p>
+            <p class="text-sm text-secondary">Years Exp.</p>
+          </div>
+          <div>
+            <p class="font-heading font-bold text-3xl text-text">3.21</p>
+            <p class="text-sm text-secondary">GPA</p>
+          </div>
+          <div>
+            <p class="font-heading font-bold text-3xl text-text">CS</p>
+            <p class="text-sm text-secondary">Naresuan Univ.</p>
+          </div>
+        </div>
+      </div>
+      <!-- Photo -->
+      <div class="flex justify-center md:justify-end">
+        <div class="relative">
+          <div class="w-72 h-72 md:w-80 md:h-80 lg:w-96 lg:h-96 rounded-3xl overflow-hidden border-4 border-white shadow-2xl bg-gradient-to-br from-blue-100 to-purple-100 flex items-center justify-center">
+            <!-- Profile picture placeholder — replace src with actual photo -->
+            <img src="Photo.jpg" alt="Photo of Thanawut Klomklom"
+              onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+              class="w-full h-full object-cover object-top" />
+            <div style="display:none;" class="w-full h-full flex-col items-center justify-center text-center p-6">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-24 h-24 text-blue-300 mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5.121 17.804A8.966 8.966 0 0112 15c2.21 0 4.21.796 5.879 2.104M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+              </svg>
+              <p class="text-blue-400 text-sm font-medium">Thanawut Klomklom</p>
+            </div>
+          </div>
+          <!-- Decorative blobs -->
+          <div class="absolute -z-10 -top-6 -right-6 w-48 h-48 bg-blue-100 rounded-full blur-3xl opacity-60"></div>
+          <div class="absolute -z-10 -bottom-6 -left-6 w-40 h-40 bg-purple-100 rounded-full blur-3xl opacity-60"></div>
+          <!-- Badge -->
+          <div class="absolute -bottom-4 -left-4 bg-white border border-gray-200 shadow-lg rounded-2xl px-4 py-3 flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/>
+              </svg>
+            </div>
+            <div>
+              <p class="text-xs text-secondary">Speciality</p>
+              <p class="text-sm font-semibold text-text">.NET &amp; SQL Server</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Scroll indicator -->
+    <div class="flex justify-center mt-16 md:mt-24">
+      <a href="#about" class="flex flex-col items-center gap-2 text-secondary text-xs hover:text-accent transition-colors cursor-pointer" aria-label="Scroll to About">
+        <span>Scroll down</span>
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 animate-bounce" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
+        </svg>
+      </a>
+    </div>
+  </section>
+
+  <!-- ─── ABOUT ─── -->
+  <section id="about" class="py-24 px-6 bg-white">
+    <div class="max-w-6xl mx-auto reveal">
+      <div class="grid md:grid-cols-2 gap-16 items-start">
+        <div>
+          <p class="text-accent font-semibold text-sm uppercase tracking-widest mb-3">About Me</p>
+          <h2 class="font-heading font-black text-4xl md:text-5xl text-text mb-6 leading-tight">Passionate about building<br/><span class="gradient-text">great software</span></h2>
+          <p class="text-secondary leading-relaxed mb-5">
+            I'm a Thai developer based in Phitsanulok, specializing in enterprise web applications and Windows service development. I thrive in challenging environments and love solving complex technical problems.
+          </p>
+          <p class="text-secondary leading-relaxed mb-8">
+            With a BSc in Computer Science from Naresuan University, I bring both academic rigor and real-world experience to every project I work on.
+          </p>
+          <div class="flex flex-wrap gap-3">
+            <span class="bg-blue-50 text-accent text-sm font-medium px-4 py-1.5 rounded-full border border-blue-100">Problem Solver</span>
+            <span class="bg-blue-50 text-accent text-sm font-medium px-4 py-1.5 rounded-full border border-blue-100">Team Player</span>
+            <span class="bg-blue-50 text-accent text-sm font-medium px-4 py-1.5 rounded-full border border-blue-100">Fast Learner</span>
+          </div>
+        </div>
+        <!-- Personal Info Grid -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div class="bg-surface rounded-2xl p-5 border border-gray-100">
+            <p class="text-xs text-secondary uppercase tracking-widest mb-1">Date of Birth</p>
+            <p class="font-semibold text-text">28 January 1994</p>
+          </div>
+          <div class="bg-surface rounded-2xl p-5 border border-gray-100">
+            <p class="text-xs text-secondary uppercase tracking-widest mb-1">Nationality</p>
+            <p class="font-semibold text-text">Thai</p>
+          </div>
+          <div class="bg-surface rounded-2xl p-5 border border-gray-100">
+            <p class="text-xs text-secondary uppercase tracking-widest mb-1">Location</p>
+            <p class="font-semibold text-text">Phitsanulok, Thailand</p>
+          </div>
+          <div class="bg-surface rounded-2xl p-5 border border-gray-100">
+            <p class="text-xs text-secondary uppercase tracking-widest mb-1">Military Status</p>
+            <p class="font-semibold text-text">Completed</p>
+          </div>
+          <div class="bg-surface rounded-2xl p-5 border border-gray-100">
+            <p class="text-xs text-secondary uppercase tracking-widest mb-1">Phone</p>
+            <p class="font-semibold text-text">082-408-8751</p>
+          </div>
+          <div class="bg-surface rounded-2xl p-5 border border-gray-100">
+            <p class="text-xs text-secondary uppercase tracking-widest mb-1">Email</p>
+            <p class="font-semibold text-text text-sm break-all">miskonova@gmail.com</p>
+          </div>
+          <!-- Education Card -->
+          <div class="sm:col-span-2 bg-gradient-to-br from-blue-600 to-purple-600 rounded-2xl p-5 text-white">
+            <p class="text-xs text-blue-200 uppercase tracking-widest mb-2">Education</p>
+            <p class="font-heading font-bold text-lg">Naresuan University</p>
+            <p class="text-blue-100 text-sm">BSc Computer Science · GPA 3.21</p>
+            <p class="text-blue-200 text-xs mt-1">2012 – 2016</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── SKILLS ─── -->
+  <section id="skills" class="py-24 px-6 bg-surface">
+    <div class="max-w-6xl mx-auto reveal">
+      <p class="text-accent font-semibold text-sm uppercase tracking-widest mb-3 text-center">Skills</p>
+      <h2 class="font-heading font-black text-4xl md:text-5xl text-text mb-14 text-center">Technical <span class="gradient-text">Expertise</span></h2>
+
+      <div class="grid md:grid-cols-2 gap-12">
+        <!-- Tech Skills -->
+        <div>
+          <h3 class="font-heading font-bold text-xl text-text mb-6">Programming &amp; Technologies</h3>
+          <div class="space-y-5" id="skillBars">
+            <div class="skill-item">
+              <div class="flex justify-between mb-1.5">
+                <span class="text-sm font-medium text-text">ASP.NET C# / Classic ASP</span>
+                <span class="text-sm text-secondary">90%</span>
+              </div>
+              <div class="skill-bar"><div class="skill-fill" data-width="0.90"></div></div>
+            </div>
+            <div class="skill-item">
+              <div class="flex justify-between mb-1.5">
+                <span class="text-sm font-medium text-text">SQL Server</span>
+                <span class="text-sm text-secondary">88%</span>
+              </div>
+              <div class="skill-bar"><div class="skill-fill" data-width="0.88"></div></div>
+            </div>
+            <div class="skill-item">
+              <div class="flex justify-between mb-1.5">
+                <span class="text-sm font-medium text-text">C# / Windows Services</span>
+                <span class="text-sm text-secondary">85%</span>
+              </div>
+              <div class="skill-bar"><div class="skill-fill" data-width="0.85"></div></div>
+            </div>
+            <div class="skill-item">
+              <div class="flex justify-between mb-1.5">
+                <span class="text-sm font-medium text-text">VB Script</span>
+                <span class="text-sm text-secondary">80%</span>
+              </div>
+              <div class="skill-bar"><div class="skill-fill" data-width="0.80"></div></div>
+            </div>
+            <div class="skill-item">
+              <div class="flex justify-between mb-1.5">
+                <span class="text-sm font-medium text-text">Network / Hardware / IT Support</span>
+                <span class="text-sm text-secondary">75%</span>
+              </div>
+              <div class="skill-bar"><div class="skill-fill" data-width="0.75"></div></div>
+            </div>
+            <div class="skill-item">
+              <div class="flex justify-between mb-1.5">
+                <span class="text-sm font-medium text-text">Photoshop &amp; Video Editing</span>
+                <span class="text-sm text-secondary">65%</span>
+              </div>
+              <div class="skill-bar"><div class="skill-fill" data-width="0.65"></div></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Soft Skills & Tools -->
+        <div class="space-y-8">
+          <!-- Language -->
+          <div>
+            <h3 class="font-heading font-bold text-xl text-text mb-5">English Proficiency</h3>
+            <div class="grid grid-cols-2 gap-3">
+              <div class="flex items-center gap-3 bg-white rounded-xl p-4 border border-gray-100">
+                <div class="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+                </div>
+                <div>
+                  <p class="text-xs text-secondary">Reading</p>
+                  <p class="font-semibold text-text text-sm">Good</p>
+                </div>
+              </div>
+              <div class="flex items-center gap-3 bg-white rounded-xl p-4 border border-gray-100">
+                <div class="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15.536 8.464a5 5 0 010 7.072M12 6v12m0 0a9 9 0 110-18 9 9 0 010 18z"/></svg>
+                </div>
+                <div>
+                  <p class="text-xs text-secondary">Listening</p>
+                  <p class="font-semibold text-text text-sm">Fair</p>
+                </div>
+              </div>
+              <div class="flex items-center gap-3 bg-white rounded-xl p-4 border border-gray-100">
+                <div class="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+                </div>
+                <div>
+                  <p class="text-xs text-secondary">Writing</p>
+                  <p class="font-semibold text-text text-sm">Good</p>
+                </div>
+              </div>
+              <div class="flex items-center gap-3 bg-white rounded-xl p-4 border border-gray-100">
+                <div class="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
+                </div>
+                <div>
+                  <p class="text-xs text-secondary">Speaking</p>
+                  <p class="font-semibold text-text text-sm">Fair</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Tools -->
+          <div>
+            <h3 class="font-heading font-bold text-xl text-text mb-5">Tools &amp; Software</h3>
+            <div class="flex flex-wrap gap-2">
+              <span class="bg-white border border-gray-200 text-secondary text-sm px-3 py-1.5 rounded-lg font-medium">MS Word</span>
+              <span class="bg-white border border-gray-200 text-secondary text-sm px-3 py-1.5 rounded-lg font-medium">Excel</span>
+              <span class="bg-white border border-gray-200 text-secondary text-sm px-3 py-1.5 rounded-lg font-medium">PowerPoint</span>
+              <span class="bg-white border border-gray-200 text-secondary text-sm px-3 py-1.5 rounded-lg font-medium">Photoshop</span>
+              <span class="bg-white border border-gray-200 text-secondary text-sm px-3 py-1.5 rounded-lg font-medium">Visual Studio</span>
+              <span class="bg-white border border-gray-200 text-secondary text-sm px-3 py-1.5 rounded-lg font-medium">SQL Server</span>
+              <span class="bg-white border border-gray-200 text-secondary text-sm px-3 py-1.5 rounded-lg font-medium">IIS</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── EXPERIENCE ─── -->
+  <section id="experience" class="py-24 px-6 bg-white">
+    <div class="max-w-6xl mx-auto reveal">
+      <p class="text-accent font-semibold text-sm uppercase tracking-widest mb-3 text-center">Career</p>
+      <h2 class="font-heading font-black text-4xl md:text-5xl text-text mb-14 text-center">Work <span class="gradient-text">Experience</span></h2>
+
+      <div class="max-w-3xl mx-auto space-y-12">
+
+        <!-- Job 1 -->
+        <div class="timeline-item">
+          <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 mb-4">
+            <div>
+              <h3 class="font-heading font-bold text-xl text-text">Programmer</h3>
+              <p class="text-accent font-medium">Max Saving Co., Ltd.</p>
+            </div>
+            <span class="inline-flex items-center bg-blue-50 text-accent text-xs font-semibold px-3 py-1 rounded-full border border-blue-100 whitespace-nowrap h-fit">Dec 2018 – Present</span>
+          </div>
+          <ul class="space-y-2 text-secondary">
+            <li class="flex items-start gap-2"><svg class="w-4 h-4 text-accent mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4"/></svg>Web Application Development with Classic ASP (VB Script)</li>
+            <li class="flex items-start gap-2"><svg class="w-4 h-4 text-accent mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4"/></svg>Web Application Development with ASP.NET C# and SQL Server</li>
+            <li class="flex items-start gap-2"><svg class="w-4 h-4 text-accent mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4"/></svg>Windows Service Development with C# and SQL Server</li>
+            <li class="flex items-start gap-2"><svg class="w-4 h-4 text-accent mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4"/></svg>Develop Electronic Office Systems (E-Office)</li>
+          </ul>
+        </div>
+
+        <!-- Job 2 -->
+        <div class="timeline-item">
+          <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 mb-4">
+            <div>
+              <h3 class="font-heading font-bold text-xl text-text">IT Support</h3>
+              <p class="text-accent font-medium">Phitsanulok Welfare Protection of Victims Trafficking Center (Ban Songkhawe)</p>
+            </div>
+            <span class="inline-flex items-center bg-gray-100 text-secondary text-xs font-semibold px-3 py-1 rounded-full whitespace-nowrap h-fit">Nov 2017 – Nov 2018</span>
+          </div>
+          <ul class="space-y-2 text-secondary">
+            <li class="flex items-start gap-2"><svg class="w-4 h-4 text-accent mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4"/></svg>Developed the organization's IT infrastructure: Network, Hardware, Software</li>
+            <li class="flex items-start gap-2"><svg class="w-4 h-4 text-accent mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4"/></svg>Gave advice and solved IT problems for users in the organization</li>
+          </ul>
+        </div>
+
+        <!-- Job 3 -->
+        <div class="timeline-item">
+          <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 mb-4">
+            <div>
+              <h3 class="font-heading font-bold text-xl text-text">Programmer</h3>
+              <p class="text-accent font-medium">Max Saving Co., Ltd.</p>
+            </div>
+            <span class="inline-flex items-center bg-gray-100 text-secondary text-xs font-semibold px-3 py-1 rounded-full whitespace-nowrap h-fit">Jun 2016 – Jan 2017</span>
+          </div>
+          <ul class="space-y-2 text-secondary">
+            <li class="flex items-start gap-2"><svg class="w-4 h-4 text-accent mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4"/></svg>Windows Service Development with C# and SQL Server</li>
+            <li class="flex items-start gap-2"><svg class="w-4 h-4 text-accent mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4"/></svg>Develop Electronic Office Systems (E-Office)</li>
+            <li class="flex items-start gap-2"><svg class="w-4 h-4 text-accent mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4"/></svg>Web Application Development with ASP.NET C# and SQL Server</li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── PROJECTS ─── -->
+  <section id="projects" class="py-24 px-6 bg-surface">
+    <div class="max-w-6xl mx-auto reveal">
+      <p class="text-accent font-semibold text-sm uppercase tracking-widest mb-3 text-center">Portfolio</p>
+      <h2 class="font-heading font-black text-4xl md:text-5xl text-text mb-14 text-center">Key <span class="gradient-text">Projects</span></h2>
+
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Card 1 -->
+        <div class="project-card bg-white rounded-2xl p-6 border border-gray-100 shadow-sm cursor-pointer">
+          <div class="w-12 h-12 rounded-2xl bg-blue-50 flex items-center justify-center mb-5">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+          </div>
+          <span class="text-xs font-semibold text-accent uppercase tracking-widest">E-Office System</span>
+          <h3 class="font-heading font-bold text-lg text-text mt-1 mb-3">Electronic Office Suite</h3>
+          <p class="text-secondary text-sm leading-relaxed mb-5">Full-featured office management system enabling digital document workflows, approvals, and correspondence tracking.</p>
+          <div class="flex flex-wrap gap-2">
+            <span class="bg-blue-50 text-accent text-xs px-2.5 py-1 rounded-lg font-medium">ASP.NET</span>
+            <span class="bg-blue-50 text-accent text-xs px-2.5 py-1 rounded-lg font-medium">C#</span>
+            <span class="bg-blue-50 text-accent text-xs px-2.5 py-1 rounded-lg font-medium">SQL Server</span>
+          </div>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="project-card bg-white rounded-2xl p-6 border border-gray-100 shadow-sm cursor-pointer">
+          <div class="w-12 h-12 rounded-2xl bg-purple-50 flex items-center justify-center mb-5">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
+          </div>
+          <span class="text-xs font-semibold text-purple-600 uppercase tracking-widest">Web Application</span>
+          <h3 class="font-heading font-bold text-lg text-text mt-1 mb-3">Max Saving Web Portal</h3>
+          <p class="text-secondary text-sm leading-relaxed mb-5">Enterprise web portal for managing savings operations, customer data, and business workflows for Max Saving Co., Ltd.</p>
+          <div class="flex flex-wrap gap-2">
+            <span class="bg-purple-50 text-purple-600 text-xs px-2.5 py-1 rounded-lg font-medium">Classic ASP</span>
+            <span class="bg-purple-50 text-purple-600 text-xs px-2.5 py-1 rounded-lg font-medium">VB Script</span>
+            <span class="bg-purple-50 text-purple-600 text-xs px-2.5 py-1 rounded-lg font-medium">SQL Server</span>
+          </div>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="project-card bg-white rounded-2xl p-6 border border-gray-100 shadow-sm cursor-pointer">
+          <div class="w-12 h-12 rounded-2xl bg-green-50 flex items-center justify-center mb-5">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2m-2-4h.01"/></svg>
+          </div>
+          <span class="text-xs font-semibold text-green-600 uppercase tracking-widest">Windows Service</span>
+          <h3 class="font-heading font-bold text-lg text-text mt-1 mb-3">Automated Background Service</h3>
+          <p class="text-secondary text-sm leading-relaxed mb-5">Windows service application for scheduled data processing, automated reports, and background job management.</p>
+          <div class="flex flex-wrap gap-2">
+            <span class="bg-green-50 text-green-600 text-xs px-2.5 py-1 rounded-lg font-medium">C#</span>
+            <span class="bg-green-50 text-green-600 text-xs px-2.5 py-1 rounded-lg font-medium">Windows Service</span>
+            <span class="bg-green-50 text-green-600 text-xs px-2.5 py-1 rounded-lg font-medium">SQL Server</span>
+          </div>
+        </div>
+
+        <!-- Card 4 -->
+        <div class="project-card bg-white rounded-2xl p-6 border border-gray-100 shadow-sm cursor-pointer">
+          <div class="w-12 h-12 rounded-2xl bg-orange-50 flex items-center justify-center mb-5">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-orange-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+          </div>
+          <span class="text-xs font-semibold text-orange-500 uppercase tracking-widest">IT Infrastructure</span>
+          <h3 class="font-heading font-bold text-lg text-text mt-1 mb-3">Network &amp; IT Setup</h3>
+          <p class="text-secondary text-sm leading-relaxed mb-5">Complete IT infrastructure setup, network installation, and hardware/software management for a government welfare organization.</p>
+          <div class="flex flex-wrap gap-2">
+            <span class="bg-orange-50 text-orange-500 text-xs px-2.5 py-1 rounded-lg font-medium">Network</span>
+            <span class="bg-orange-50 text-orange-500 text-xs px-2.5 py-1 rounded-lg font-medium">Hardware</span>
+            <span class="bg-orange-50 text-orange-500 text-xs px-2.5 py-1 rounded-lg font-medium">IT Support</span>
+          </div>
+        </div>
+
+        <!-- Card 5: Training -->
+        <div class="project-card bg-gradient-to-br from-slate-800 to-slate-900 rounded-2xl p-6 shadow-sm cursor-pointer md:col-span-2 lg:col-span-1">
+          <div class="w-12 h-12 rounded-2xl bg-white/10 flex items-center justify-center mb-5">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+          </div>
+          <span class="text-xs font-semibold text-blue-300 uppercase tracking-widest">Training</span>
+          <h3 class="font-heading font-bold text-lg text-white mt-1 mb-3">Network Installation &amp; Troubleshooting</h3>
+          <p class="text-slate-400 text-sm leading-relaxed mb-5">Completed professional training in basic network installation and troubleshooting techniques.</p>
+          <div class="flex flex-wrap gap-2">
+            <span class="bg-white/10 text-white text-xs px-2.5 py-1 rounded-lg font-medium">Networking</span>
+            <span class="bg-white/10 text-white text-xs px-2.5 py-1 rounded-lg font-medium">Troubleshooting</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── QUALIFICATIONS ─── -->
+  <section id="qualifications" class="py-24 px-6 bg-white">
+    <div class="max-w-6xl mx-auto reveal">
+      <p class="text-accent font-semibold text-sm uppercase tracking-widest mb-3 text-center">Strengths</p>
+      <h2 class="font-heading font-black text-4xl md:text-5xl text-text mb-14 text-center">Personal <span class="gradient-text">Qualities</span></h2>
+      <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+        <div class="flex items-start gap-4 bg-surface rounded-2xl p-5 border border-gray-100">
+          <div class="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center flex-shrink-0">
+            <svg class="w-5 h-5 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+          </div>
+          <div>
+            <p class="font-semibold text-text">Teamwork &amp; Leadership</p>
+            <p class="text-secondary text-sm mt-1">Good teamwork and leadership skills</p>
+          </div>
+        </div>
+        <div class="flex items-start gap-4 bg-surface rounded-2xl p-5 border border-gray-100">
+          <div class="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center flex-shrink-0">
+            <svg class="w-5 h-5 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          </div>
+          <div>
+            <p class="font-semibold text-text">Responsibility</p>
+            <p class="text-secondary text-sm mt-1">High sense of responsibilities</p>
+          </div>
+        </div>
+        <div class="flex items-start gap-4 bg-surface rounded-2xl p-5 border border-gray-100">
+          <div class="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center flex-shrink-0">
+            <svg class="w-5 h-5 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+          </div>
+          <div>
+            <p class="font-semibold text-text">Analytical Skills</p>
+            <p class="text-secondary text-sm mt-1">Good planning and analytical skills</p>
+          </div>
+        </div>
+        <div class="flex items-start gap-4 bg-surface rounded-2xl p-5 border border-gray-100">
+          <div class="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center flex-shrink-0">
+            <svg class="w-5 h-5 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+          </div>
+          <div>
+            <p class="font-semibold text-text">Problem Solving</p>
+            <p class="text-secondary text-sm mt-1">Excellent problem-solving skill</p>
+          </div>
+        </div>
+        <div class="flex items-start gap-4 bg-surface rounded-2xl p-5 border border-gray-100">
+          <div class="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center flex-shrink-0">
+            <svg class="w-5 h-5 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
+          </div>
+          <div>
+            <p class="font-semibold text-text">Work Under Pressure</p>
+            <p class="text-secondary text-sm mt-1">Works well under pressure with patience</p>
+          </div>
+        </div>
+        <div class="flex items-start gap-4 bg-surface rounded-2xl p-5 border border-gray-100">
+          <div class="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center flex-shrink-0">
+            <svg class="w-5 h-5 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
+          </div>
+          <div>
+            <p class="font-semibold text-text">Interpersonal Skills</p>
+            <p class="text-secondary text-sm mt-1">Good relationship and interpersonal skill</p>
+          </div>
+        </div>
+        <div class="flex items-start gap-4 bg-surface rounded-2xl p-5 border border-gray-100 sm:col-span-2 lg:col-span-2">
+          <div class="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center flex-shrink-0">
+            <svg class="w-5 h-5 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          </div>
+          <div>
+            <p class="font-semibold text-text">Time Management</p>
+            <p class="text-secondary text-sm mt-1">Ability to manage time and prioritize effectively</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── CONTACT ─── -->
+  <section id="contact" class="py-24 px-6 bg-gradient-to-br from-slate-900 to-slate-800">
+    <div class="max-w-4xl mx-auto reveal text-center">
+      <p class="text-blue-400 font-semibold text-sm uppercase tracking-widest mb-3">Get in Touch</p>
+      <h2 class="font-heading font-black text-4xl md:text-5xl text-white mb-6">Let's Work <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">Together</span></h2>
+      <p class="text-slate-400 text-lg max-w-xl mx-auto mb-12">
+        I'm currently open to new opportunities. Whether you have a project in mind or just want to say hi — my inbox is always open.
+      </p>
+      <div class="grid sm:grid-cols-3 gap-4 mb-10">
+        <!-- Phone -->
+        <a href="tel:0824088751" class="group flex flex-col items-center gap-3 bg-white/5 hover:bg-white/10 border border-white/10 rounded-2xl p-6 transition-colors duration-200 cursor-pointer" aria-label="Call Thanawut">
+          <div class="w-12 h-12 rounded-xl bg-blue-500/20 flex items-center justify-center">
+            <svg class="w-6 h-6 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
+          </div>
+          <div>
+            <p class="text-xs text-slate-500 mb-0.5">Phone</p>
+            <p class="text-white font-semibold">082-408-8751</p>
+          </div>
+        </a>
+        <!-- Email -->
+        <a href="mailto:miskonova@gmail.com" class="group flex flex-col items-center gap-3 bg-white/5 hover:bg-white/10 border border-white/10 rounded-2xl p-6 transition-colors duration-200 cursor-pointer" aria-label="Email Thanawut">
+          <div class="w-12 h-12 rounded-xl bg-purple-500/20 flex items-center justify-center">
+            <svg class="w-6 h-6 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+          </div>
+          <div>
+            <p class="text-xs text-slate-500 mb-0.5">Email</p>
+            <p class="text-white font-semibold text-sm">miskonova@gmail.com</p>
+          </div>
+        </a>
+        <!-- Location -->
+        <div class="flex flex-col items-center gap-3 bg-white/5 border border-white/10 rounded-2xl p-6">
+          <div class="w-12 h-12 rounded-xl bg-green-500/20 flex items-center justify-center">
+            <svg class="w-6 h-6 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+          </div>
+          <div>
+            <p class="text-xs text-slate-500 mb-0.5">Location</p>
+            <p class="text-white font-semibold text-sm text-center">Phitsanulok, Thailand 65140</p>
+          </div>
+        </div>
+      </div>
+      <a href="mailto:miskonova@gmail.com" class="inline-flex items-center gap-2 bg-accent hover:bg-blue-700 text-white font-semibold text-lg px-8 py-4 rounded-2xl transition-colors duration-200 cursor-pointer">
+        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+        Send Email
+      </a>
+    </div>
+  </section>
+
+  <!-- ─── FOOTER ─── -->
+  <footer class="bg-slate-950 py-8 px-6 text-center">
+    <p class="text-slate-500 text-sm">© 2024 Thanawut Klomklom — All rights reserved.</p>
+    <p class="text-slate-600 text-xs mt-1">Built with HTML &amp; Tailwind CSS</p>
+  </footer>
+
+  <!-- ─── SCRIPTS ─── -->
+  <script>
+    // Intersection Observer for reveal animations
+    const revealEls = document.querySelectorAll('.reveal');
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
+    revealEls.forEach(el => revealObserver.observe(el));
+
+    // Skill bar animation
+    const skillFills = document.querySelectorAll('.skill-fill');
+    const skillObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const fills = entry.target.querySelectorAll('.skill-fill');
+          fills.forEach(fill => {
+            const w = fill.dataset.width;
+            fill.style.transform = `scaleX(${w})`;
+            fill.classList.add('animated');
+          });
+          skillObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.3 });
+    const skillSection = document.getElementById('skillBars');
+    if (skillSection) skillObserver.observe(skillSection);
+
+    // Active nav highlight
+    const sections = document.querySelectorAll('section[id]');
+    const navLinks = document.querySelectorAll('.nav-link');
+    const sectionObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          navLinks.forEach(link => {
+            link.style.color = link.getAttribute('href') === '#' + entry.target.id ? '#2563EB' : '';
+          });
+        }
+      });
+    }, { rootMargin: '-40% 0px -50% 0px' });
+    sections.forEach(s => sectionObserver.observe(s));
+
+    // Navbar scroll shadow
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 20) {
+        navbar.classList.add('shadow-md');
+      } else {
+        navbar.classList.remove('shadow-md');
+      }
+    });
+  </script>
+</body>
+</html>

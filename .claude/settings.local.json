@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python .claude/skills/ui-ux-pro-max/scripts/search.py \"programmer portfolio tech professional minimal\" --design-system -p \"Thanawut Portfolio\")",
+      "Bash(python .claude/skills/ui-ux-pro-max/scripts/search.py \"portfolio developer tech\" --stack html-tailwind)"
+    ]
+  }
+}
