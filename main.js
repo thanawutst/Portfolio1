@@ -49,11 +49,16 @@ if (skillSection) skillObserver.observe(skillSection);
 // Active nav highlight
 const sections = document.querySelectorAll('section[id]');
 const navLinks = document.querySelectorAll('.nav-link');
+const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
 const sectionObserver = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
     if (entry.isIntersecting) {
+      const activeHref = '#' + entry.target.id;
       navLinks.forEach(link => {
-        link.style.color = link.getAttribute('href') === '#' + entry.target.id ? '#2563EB' : '';
+        link.style.color = link.getAttribute('href') === activeHref ? '#2563EB' : '';
+      });
+      mobileNavLinks.forEach(link => {
+        link.classList.toggle('active', link.getAttribute('href') === activeHref);
       });
     }
   });
